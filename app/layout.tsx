@@ -1,10 +1,21 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Inter, Trade_Winds } from 'next/font/google'
 import './globals.css'
 import 'tailwind-normalize/normalize.css'
 import { Header } from '@/components/Header'
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({
+    subsets: ['latin'],
+    variable: '--font-inter',
+    display: 'swap',
+})
+
+const trade = Trade_Winds({
+    weight: '400',
+    subsets: ['latin'],
+    variable: '--font-trade-winds',
+    display: 'swap',
+})
 
 export const metadata: Metadata = {
     title: 'My Next.js App',
@@ -17,7 +28,7 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
     return (
-        <html lang="en">
+        <html lang="en" className={`${inter.variable} ${trade.variable}`}>
             <body className={inter.className}>
                 <Header />
                 <main>{children}</main>
