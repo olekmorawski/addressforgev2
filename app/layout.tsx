@@ -31,7 +31,7 @@ export default function RootLayout({
         <html lang="en" className={`${inter.variable} ${trade.variable}`}>
             <body className={inter.className}>
                 <Header />
-                <main>{children}</main>
+                <main className="bg-[#FAFAFA]">{children}</main>
             </body>
         </html>
     )

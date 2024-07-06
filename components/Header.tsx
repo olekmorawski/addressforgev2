@@ -3,22 +3,28 @@ import Link from 'next/link'
 import Image from 'next/image'
 import GithubLogo from '../images/git.svg'
 import { Moon } from '@phosphor-icons/react/dist/ssr'
+import Logo from '../images/AddressForgeLogo.jpg'
 
 export const Header = () => {
     return (
-        <header className="h-[124px] w-full bg-[#FAFAFA] shadow-sm">
+        <header className="h-full w-full bg-[#FAFAFA]">
             <div className="mx-auto max-w-[1440px]">
                 <div className="flex items-center justify-between">
                     <Link
                         href="/"
-                        className="ml-[78px] mt-8 font-trade text-5xl font-normal text-black"
+                        className="my-8 ml-[78px] flex items-center font-trade text-5xl font-normal text-black"
                     >
-                        AdressForge
+                        <Image
+                            src={Logo}
+                            className="mr-2 h-16 w-16"
+                            alt="AddressForge Logo Icon"
+                        />
+                        <span>AdressForge</span>
                     </Link>
                     <nav className="flex items-center space-x-4">
                         <Link
                             href="/about"
-                            className="text-gray-600 hover:text-gray-800"
+                            className="text-base text-gray-600 hover:text-gray-800"
                         >
                             About
                         </Link>
