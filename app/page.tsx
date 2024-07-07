@@ -14,8 +14,10 @@ export default function Home() {
                         Efficiently create and manage Ethereum salt addresses
                         while optimizing gas costs
                     </p>
-                    <button className="rounded-md bg-purple-500 px-6 py-3 text-white transition-colors hover:bg-purple-600">
-                        Launch app
+                    <button className="group relative mb-2 me-2 inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-cyan-500 to-blue-500 p-0.5 text-sm font-medium text-gray-900 hover:text-white focus:outline-none focus:ring-4 focus:ring-cyan-200 group-hover:from-cyan-500 group-hover:to-blue-500">
+                        <span className="relative rounded-md bg-[#FAFAFA] px-5 py-2.5 transition-all duration-75 ease-in group-hover:bg-opacity-0">
+                            Launch App
+                        </span>
                     </button>
                     <div className="mt-4 flex items-center">
                         <span className="mr-2 text-sm text-gray-500">
