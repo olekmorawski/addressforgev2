@@ -6,14 +6,14 @@ import { Moon } from '@phosphor-icons/react/dist/ssr'
 
 export const Header = () => {
     return (
-        <header className="top-0 z-50 w-full bg-[#FAFAFA]">
+        <header className="top-0 w-full bg-[#FAFAFA]">
             <div className="mx-auto max-w-[1440px]">
                 <div className="flex items-center justify-between">
                     <Link
                         href="/"
                         className="my-8 ml-8 flex items-center font-trade text-5xl font-normal text-black"
                     >
-                        <span>AdressForge</span>
+                        <span>AddressForge</span>
                     </Link>
                     <nav className="flex items-center space-x-4">
                         <Link
