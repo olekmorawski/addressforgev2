@@ -5,6 +5,8 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     className?: string
     variant?: 'default' | 'outline' | 'ghost'
     size?: 'default' | 'icon'
+    typeControl?: 'button' | 'toogle'
+    isActive?: boolean 
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -12,6 +14,8 @@ export const Button: React.FC<ButtonProps> = ({
     className = '',
     variant = 'default',
     size = 'default',
+    typeControl = 'button',
+    isActive = false, 
     ...props
 }) => {
     const baseStyle =
@@ -34,7 +38,7 @@ export const Button: React.FC<ButtonProps> = ({
 
     return (
         <button
-            className={`${baseStyle} ${variantClass} ${sizeClass} ${className}`}
+            className={`${baseStyle} ${variantClass} ${sizeClass} ${className} ${typeControl === 'toogle' ? (isActive ? 'active' : 'deactive') : ''}`}
             {...props}
         >
             {children}

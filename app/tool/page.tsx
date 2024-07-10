@@ -8,6 +8,8 @@ import { Copy } from '@phosphor-icons/react/dist/ssr'
 export default function Generator() {
     const [developerAddress, setDeveloperAddress] = useState('')
     const [desiredPattern, setDesiredPattern] = useState('aabc1')
+    const [editablePartPatern, setEditablePartPatern] = useState('prefix')
+    const [elseValueAddress, setElseValueAddress] = useState('3213F8e9432c50BA2c0b41738F941fa8c5B76043')
     const [generatedAddress, setGeneratedAddress] = useState(
         '0x3213F8e9432c50BA2c0b41738F941fa8c5B76043'
     )
@@ -33,7 +35,7 @@ export default function Generator() {
                             Developer address
                         </label>
                         <Input
-                            placeholder="Placeholder"
+                            placeholder="0xec84315444eF43a4Ee594168bfD1adCCE4C6816d"
                             value={developerAddress}
                             onChange={(
                                 e: React.ChangeEvent<HTMLInputElement>
@@ -42,20 +44,66 @@ export default function Generator() {
                     </div>
 
                     <div className="flex space-x-2">
-                        <Button variant="outline">Prefix</Button>
-                        <Button variant="outline">Suffix</Button>
+                        <Button 
+                            typeControl="toogle"
+                            isActive={editablePartPatern === 'prefix'}
+                            onClick={() => setEditablePartPatern('prefix')}
+                            > Prefix
+                        </Button>
+                        <Button 
+                            typeControl="toogle"
+                            isActive={editablePartPatern === 'sufix'} 
+                            onClick={() => setEditablePartPatern('sufix')}
+                        > Sufix
+                        </Button>
                     </div>
 
                     <div>
                         <label className="mb-1 block text-sm font-medium">
                             Desired pattern
                         </label>
-                        <Input
-                            value={desiredPattern}
-                            onChange={(
-                                e: React.ChangeEvent<HTMLInputElement>
-                            ) => setDesiredPattern(e.target.value)}
-                        />
+
+                        <div className="flex space-x-2">
+                            <Input 
+                                value="0x"
+                                style={{
+                                    width:'44px',
+                                    backgroundColor: '#f5f5f5'
+                                }}
+                                readOnly
+                            />
+                        {editablePartPatern === 'prefix' ? (
+                            <>
+                                <Input
+                                    value={elseValueAddress}
+                                    style={{
+                                        backgroundColor: '#f5f5f5'
+                                    }}
+                                />
+                                <Input
+                                    value={desiredPattern}
+                                    onChange={(
+                                        e: React.ChangeEvent<HTMLInputElement>
+                                    ) => setDesiredPattern(e.target.value)}
+                                />
+                            </>
+                        ) : (
+                            <>
+                                <Input
+                                    value={desiredPattern}
+                                    onChange={(
+                                        e: React.ChangeEvent<HTMLInputElement>
+                                    ) => setDesiredPattern(e.target.value)}
+                                />
+                                <Input
+                                    value={elseValueAddress}
+                                    style={{
+                                        backgroundColor: '#f5f5f5'
+                                    }}
+                                />
+                            </>
+                        )}
+                        </div>
                     </div>
                 </CardContent>
             </Card>
