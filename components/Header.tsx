@@ -8,21 +8,30 @@ export const Header = () => {
     return (
         <header className="top-0 w-full bg-[#FAFAFA]">
             <div className="mx-auto max-w-[1440px]">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between py-4">
                     <Link
                         href="/"
-                        className="my-8 ml-8 flex items-center font-trade text-5xl font-normal text-black"
+                        className="ml-8 flex items-center font-trade text-5xl font-normal text-black"
                     >
                         <span>AddressForge</span>
                     </Link>
-                    <nav className="flex items-center space-x-4">
+                    <nav className="mr-8 flex items-center space-x-4">
                         <Link
                             href="/about"
-                            className="text-base text-gray-600 hover:text-gray-800"
+                            className="border-l border-gray-300 pl-4 text-base text-gray-600 first:border-0 first:pl-0 hover:text-gray-800"
                         >
                             About
                         </Link>
-                        <Link href="https://github.com/olekmorawski/addressforgev2">
+                        <Link
+                            href="/terms"
+                            className="border-l border-gray-300 pl-4 text-base text-gray-600 hover:text-gray-800"
+                        >
+                            Terms of use
+                        </Link>
+                        <Link
+                            href="https://github.com/olekmorawski/addressforgev2"
+                            className="border-x border-gray-300 px-4"
+                        >
                             <Image src={GithubLogo} alt={'Github Link'} />
                         </Link>
                         <button className="rounded-full bg-gray-200 p-2 text-gray-600 hover:bg-gray-300">

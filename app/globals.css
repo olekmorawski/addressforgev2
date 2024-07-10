@@ -2,12 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+
+:root {
+    --main: rgba(250, 250, 250, 1);
+    --black: rgba(0, 0, 0, 1);
+    --lightblue: rgba(6, 182, 212, 1);
+    --blue: rgba(59, 130, 246, 1);
+    --darkblue: rgba(19, 24, 141, 1);
+    --light: rgba(130, 130, 130, 1);
+
+}
+
 html, body {
     height: 100%;
     margin: 0;
     padding: 0;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; 
 }
 
 body {
