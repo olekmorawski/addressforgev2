@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Card, CardContent } from '@/components/Card'
 import { Input } from '@/components/Input'
 import { Button } from '@/components/Button'
@@ -7,9 +7,10 @@ import { Copy } from '@phosphor-icons/react/dist/ssr'
 
 export default function Generator() {
     const [developerAddress, setDeveloperAddress] = useState('')
-    const [desiredPattern, setDesiredPattern] = useState('aabc1')
+    const [inputAddress, setInputAddress] = useState('aabc1')
     const [editablePartPatern, setEditablePartPatern] = useState('prefix')
-    const [elseValueAddress, setElseValueAddress] = useState('3213F8e9432c50BA2c0b41738F941fa8c5B76043')
+    const [elseValueAddress, setElseValueAddress] = useState('A321111')
+    const [difficulty, setDifficulty] = useState('')
     const [generatedAddress, setGeneratedAddress] = useState(
         '0x3213F8e9432c50BA2c0b41738F941fa8c5B76043'
     )
@@ -20,6 +21,19 @@ export default function Generator() {
         setSalt(Math.floor(Math.random() * 100000).toString())
         setRemainingGenerations((prev) => prev - 1)
     }
+    let calculatedDifficulty = "0";
+
+    useEffect(() => {
+
+        const addressLength = inputAddress.length;
+        calculatedDifficulty = addressLength > 0 ? Math.pow(16, addressLength).toLocaleString('fullwide', {useGrouping:false}) : "0";
+        setDifficulty(calculatedDifficulty);
+        if(editablePartPatern === 'prefix') {
+            setGeneratedAddress(`0x${inputAddress}${elseValueAddress}`);
+        } else {
+            setGeneratedAddress(`0x${elseValueAddress}${inputAddress}`);
+        }
+      }, [inputAddress, elseValueAddress, editablePartPatern]);
 
     return (
         <div className="mx-auto max-w-md space-y-4">
@@ -79,21 +93,22 @@ export default function Generator() {
                                     style={{
                                         backgroundColor: '#f5f5f5'
                                     }}
+                                    readOnly
                                 />
                                 <Input
-                                    value={desiredPattern}
+                                    value={inputAddress}
                                     onChange={(
                                         e: React.ChangeEvent<HTMLInputElement>
-                                    ) => setDesiredPattern(e.target.value)}
+                                    ) => setInputAddress(e.target.value)}
                                 />
                             </>
                         ) : (
                             <>
                                 <Input
-                                    value={desiredPattern}
+                                    value={inputAddress}
                                     onChange={(
                                         e: React.ChangeEvent<HTMLInputElement>
-                                    ) => setDesiredPattern(e.target.value)}
+                                    ) => setInputAddress(e.target.value)}
                                 />
                                 <Input
                                     value={elseValueAddress}
@@ -121,6 +136,7 @@ export default function Generator() {
                         <label className="mb-1 block text-sm font-medium">
                             Difficulty:
                         </label>
+                        <div className="text-sm">{difficulty}</div>
                         <Button className="w-full" onClick={handleGenerateSalt}>
                             Generate salt
                         </Button>
