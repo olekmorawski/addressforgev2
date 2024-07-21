@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Card, CardContent } from '@/components/Card'
 import { Input } from '@/components/Input'
 import { Button } from '@/components/Button'
@@ -7,25 +7,137 @@ import { Copy } from '@phosphor-icons/react/dist/ssr'
 
 export default function Generator() {
     const [developerAddress, setDeveloperAddress] = useState('')
-    const [desiredPattern, setDesiredPattern] = useState('aabc1')
+    const [inputAddress, setInputAddress] = useState('')
+    const [typeGeneration, setTypeGeneration] = useState('pattern')
+    const [gasLevelReduction, setGasLevelReduction] = useState(0)
+    const [editablePartPatern, setEditablePartPatern] = useState('prefix')
+    const [elseValueAddress, setElseValueAddress] = useState('3213F8e9432c50BA2c0b41738F941fa8c5B76043')
+    const [difficulty, setDifficulty] = useState('')
     const [generatedAddress, setGeneratedAddress] = useState(
         '0x3213F8e9432c50BA2c0b41738F941fa8c5B76043'
     )
+    const [isValidAddress, setIsValidAddress] = useState(true);
     const [salt, setSalt] = useState('21234')
     const [remainingGenerations, setRemainingGenerations] = useState(5)
+    let cutAddress='';
 
     const handleGenerateSalt = () => {
         setSalt(Math.floor(Math.random() * 100000).toString())
         setRemainingGenerations((prev) => prev - 1)
     }
+    let calculatedDifficulty = "0";
+    const ethereumAddressRegex = /^0x[a-fA-F0-9]+$/;
+
+    useEffect(() => {
+
+
+        const addressLength = inputAddress.length;
+        const totalLength = 42;
+        let prefix = '0x';
+        if(typeGeneration === 'pattern') {
+            calculatedDifficulty = addressLength > 0 ? Math.pow(16, addressLength).toLocaleString('fullwide', {useGrouping:false}) : "0";
+
+        } else {
+            console.log('asdasdadadasd')
+            calculatedDifficulty =gasLevelReduction > 0 ?   Math.pow(16, gasLevelReduction).toLocaleString('fullwide', {useGrouping:false}): "0";
+            }
+        setDifficulty(calculatedDifficulty);
+        if(editablePartPatern === 'prefix') {
+            if(typeGeneration === 'pattern') {
+                cutAddress = elseValueAddress.slice(0, 42 - 2 - inputAddress.length);
+                setGeneratedAddress(`0x${inputAddress}${cutAddress}`);
+            }else {
+                prefix = '0x' + '0'.repeat(gasLevelReduction); 
+                cutAddress = elseValueAddress.slice(0, 42 - 2 - gasLevelReduction);
+                const paddedAddress = cutAddress.padStart(totalLength - prefix.length, '0');
+                setGeneratedAddress(prefix+ paddedAddress);
+            }
+        } else {
+            if(typeGeneration === 'pattern') {
+            cutAddress = elseValueAddress.slice(0, 42 - 2 - inputAddress.length);
+            setGeneratedAddress(`0x${cutAddress}${inputAddress}`);
+            } else {
+                const suffix = '0'.repeat(gasLevelReduction); 
+                cutAddress = elseValueAddress.slice(0, 42 - 2 - gasLevelReduction); 
+                const paddedAddress = cutAddress.padEnd(40 - gasLevelReduction, '0'); 
+                setGeneratedAddress("0x"+paddedAddress+suffix);
+            }
+        }
+        
+      }, [inputAddress, elseValueAddress, editablePartPatern, gasLevelReduction]);
+
+      const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value;
+        const fullAddress = `0x${value}`;
+        const isValid = ethereumAddressRegex.test(fullAddress);
+        setIsValidAddress(isValid);
+        if(value ===''){
+          setIsValidAddress(true);
+        }
+        setInputAddress(value);
+        console.log(isValidAddress);
+      };
+
+      const updateGasLevelReduction = (changeType: 'increase' | 'decrease')  => {
+        setGasLevelReduction(prev => {
+          if (changeType === 'decrease') {
+            return prev > 0 ? prev - 1 : 0;
+          } else if (changeType === 'increase') {
+            return prev < 20 ? prev + 1 : 20;
+          } else {
+            return prev; // Nie zmieniaj wartości, jeśli changeType jest nieznany
+          }
+        });
+      };
+
+
 
     return (
         <div className="mx-auto max-w-md space-y-4">
             <Card>
-                <CardContent className="space-y-4">
-                    <div className="flex space-x-2">
-                        <Button variant="outline">Pattern generation</Button>
-                        <Button variant="outline">Gas reduction</Button>
+                <CardContent className="mt-10">
+                    <div className = "text-sm">
+                        <ul>
+                            <li>1. Please note that the string adress always starts with 0x.</li>
+                            <li>2. You can edit maximum 5 characters in adress. </li>
+                            <li>3. String have to be written in hex: 0-9, A-F, a-f. </li>
+                            <li>4. Letters can be written in uppercase or lowercase.</li>
+                            <li>5. Gas reduction is the amount of the zeros in the prefix.</li>
+                            <li>6. The more changes in the adress, the more computational power will be required, therefore increasing gas price. </li>
+                        </ul>
+                        <div className="text-blue-500  text-justify 24px pt-6 font-bold pl-2 pr-2  text-base">
+                            Connect your wallet containing at least 10 GLM to unlock free and unlimited access to AddressForge Salt Generator.
+                        </div>
+                    </div>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardContent className="space-y-2">
+                <label className="mb-1 block text-sm font-medium">
+                        Choose adress generation pattern
+                        </label>
+                    <div className="flex space-x-2" style={{
+                                justifyContent: 'center',
+                                backgroundColor: '#f5f5f5',
+                                padding: '10px',
+                                borderRadius: '10px',
+                                fontSize: '16px'
+                            }}>
+                        <Button 
+                            className="w-1/2"
+                            variant= 'default'
+                            typeControl="toogle"
+                            isActive={typeGeneration === 'pattern'}
+                            onClick={() => setTypeGeneration('pattern')}
+                            > Pattern generation
+                        </Button>
+                        <Button 
+                            className="w-1/2"
+                            typeControl="toogle"
+                            isActive={typeGeneration === 'gas'} 
+                            onClick={() => setTypeGeneration('gas')}
+                        > Gas reduction
+                        </Button>
                     </div>
 
                     <div>
@@ -33,7 +145,7 @@ export default function Generator() {
                             Developer address
                         </label>
                         <Input
-                            placeholder="Placeholder"
+                            placeholder="Paste your addres ed. 0x3213F8e9432c50BA2c..."
                             value={developerAddress}
                             onChange={(
                                 e: React.ChangeEvent<HTMLInputElement>
@@ -41,39 +153,121 @@ export default function Generator() {
                         />
                     </div>
 
-                    <div className="flex space-x-2">
-                        <Button variant="outline">Prefix</Button>
-                        <Button variant="outline">Suffix</Button>
+                    <div className="flex space-x-2" style={{
+                                justifyContent: 'center',
+                                backgroundColor: '#f5f5f5',
+                                padding: '10px',
+                                borderRadius: '10px',
+                                fontSize: '16px'
+                            }}>
+                        <Button 
+                            className="w-1/2"
+                            typeControl="toogle"
+                            isActive={editablePartPatern === 'prefix'}
+                            onClick={() => setEditablePartPatern('prefix')}
+                            > Prefix
+                        </Button>
+                        <Button 
+                            className="w-1/2"
+                            typeControl="toogle"
+                            isActive={editablePartPatern === 'sufix'} 
+                            onClick={() => setEditablePartPatern('sufix')}
+                        > Sufix
+                        </Button>
                     </div>
 
-                    <div>
-                        <label className="mb-1 block text-sm font-medium">
-                            Desired pattern
-                        </label>
-                        <Input
-                            value={desiredPattern}
-                            onChange={(
-                                e: React.ChangeEvent<HTMLInputElement>
-                            ) => setDesiredPattern(e.target.value)}
-                        />
-                    </div>
+                    {typeGeneration === 'pattern' ? (
+                        <>
+                        <div>
+                            <label className="mb-1 block text-sm font-medium">
+                                Desired pattern
+                            </label>
+
+                            <div className="flex space-x-2">
+                                <Input 
+                                    value="0x"
+                                    className="w-11 bg-[#f5f5f5]"
+                                    readOnly
+                                />
+                            {editablePartPatern === 'prefix' ? (
+                                <>
+                                    <Input
+                                        value={elseValueAddress}
+                                        className="bg-[#f5f5f5]"
+                                        readOnly
+                                    />
+                                    <Input
+                                        value={inputAddress}
+                                        onChange={handleInputChange}
+                                        maxLength={20} 
+                                    />
+                            </>
+                        ) : (
+                            <>
+                                    <Input
+                                        value={inputAddress}
+                                        onChange={handleInputChange}
+                                        maxLength={20} 
+                                    />
+                                    <Input
+                                        value={elseValueAddress}
+                                        className="bg-[#f5f5f5]"
+                                    />
+                                </>
+                        )}
+                            </div>
+                        </div>
+                            </>
+                        ) : (
+                            <>
+                            <label className="mb-1 block text-sm font-medium">
+                                Gas reduction level
+                            </label>
+                            <div className="text-center">
+                                <Button 
+                                    className="w-1/8 mr-4 bg-[#3B82F6] text-xl"
+                                    onClick={() => updateGasLevelReduction('decrease')}
+                                > -
+                                </Button>
+                                <Input
+                                    className="w-1/5 text-center"
+                                    value={gasLevelReduction}
+                                    onChange={(
+                                        e: React.ChangeEvent<HTMLInputElement>
+                                    ) => {
+                                        const newValue = parseInt(e.target.value, 10);
+                                        if (!isNaN(newValue) && newValue >= 0 && newValue <= 20) {
+                                            setGasLevelReduction(newValue);
+                                        }
+                                    }}
+                                />
+                                <Button 
+                                    className="w-1/8 text-center ml-4 bg-[#3B82F6] text-xl"
+                                    onClick={() => updateGasLevelReduction('increase')}
+                                > +
+                                </Button>
+                            </div>
+                            </>
+                        )}
+
                 </CardContent>
             </Card>
 
             <Card>
                 <CardContent className="space-y-4">
                     <div>
-                        <label className="mb-1 block text-sm font-medium">
+                        <label className="mb-1 block text-sm font-medium ">
                             Address:
                         </label>
-                        <div className="text-sm">{generatedAddress}</div>
+                        <div className="text-sm" >{generatedAddress}</div>
                     </div>
 
                     <div>
                         <label className="mb-1 block text-sm font-medium">
                             Difficulty:
                         </label>
-                        <Button className="w-full" onClick={handleGenerateSalt}>
+                        <div className="text-sm">{difficulty}</div>
+                        <Button className="w-full bg-gradient-to-r from-blue-500 to-cyan-500" onClick={handleGenerateSalt}>
                             Generate salt
                         </Button>
                         <div className="mt-1 text-right text-xs">
