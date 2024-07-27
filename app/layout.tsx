@@ -39,19 +39,30 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
     return (
-        <html lang="en" className={`${inter.variable} ${trade.variable}`}>
-            <body className={`${inter.className} relative flex flex-col min-h-screen`}>
-            <Image
+        <html
+            lang="en"
+            className={`${inter.variable} ${trade.variable} ${jost.variable}`}
+        >
+            <body
+                className={`${inter.className} relative flex min-h-screen flex-col`}
+            >
+                <Image
                     src={Cloud}
                     alt="Background"
                     layout="fill"
                     className="z-0"
                     padding-right="160px"
-                    style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                    }}
                 />
                 <Header />
 
-                <main className="flex-grow relative">{children}</main>
+                <main className="relative flex-grow">{children}</main>
                 <Footer />
             </body>
         </html>
