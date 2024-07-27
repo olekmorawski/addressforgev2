@@ -254,7 +254,7 @@ export default function Generator() {
                                 > -
                                 </Button>
                                 <Input
-                                    className="w-20 text-center"
+                                    className="w-[40px] text-center"
                                     value={gasLevelReduction}
                                     onChange={(
                                         e: React.ChangeEvent<HTMLInputElement>
