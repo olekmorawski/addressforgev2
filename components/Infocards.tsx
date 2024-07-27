@@ -27,7 +27,9 @@ export const Infocards = () => {
                         <div className="mt-2 flex h-12 w-12 items-center justify-center rounded-xl bg-white">
                             {icons[index]}
                         </div>
-                        <p className="text-center text-sm">{text}</p>
+                        <p className="text-center text-[20px] font-medium leading-[29px] mb-[5%]">
+                            {text}
+                        </p>
                     </div>
                 </div>
             ))}

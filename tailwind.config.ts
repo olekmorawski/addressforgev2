@@ -1,7 +1,6 @@
+const withMT = require('@material-tailwind/react/utils/withMT')
 
-const withMT = require("@material-tailwind/react/utils/withMT");
-
-const config= {
+const config = {
     content: [
         './pages/**/*.{js,ts,jsx,tsx,mdx}',
         './components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -22,10 +21,11 @@ const config= {
             fontFamily: {
                 sans: ['var(--font-inter)', 'sans-serif'],
                 trade: ['var(--font-trade-winds)', 'cursive'],
+                jost: ['var(--font-jost)', 'sans-serif'],
             },
         },
     },
     plugins: [],
 }
 
-module.exports = withMT(config);
+module.exports = withMT(config)

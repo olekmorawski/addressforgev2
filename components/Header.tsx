@@ -6,7 +6,7 @@ import { Moon } from '@phosphor-icons/react/dist/ssr'
 
 export const Header = () => {
     return (
-        <header className="bg-main top-0 h-[110px] w-full">
+        <header className="top-0 h-[110px] w-full bg-main">
             <div className="mx-auto max-w-[1440px]">
                 <div className="flex items-center justify-between py-4">
                     <Link
@@ -38,11 +38,11 @@ export const Header = () => {
                             <Moon size={24} />
                         </button>
                         <Link href="/tool">
-                            <div className="group relative mb-2 me-2 inline-flex items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br from-cyan-500 to-blue-500 p-0.5 text-sm font-medium text-gray-900 hover:text-white focus:outline-none focus:ring-4 focus:ring-cyan-200 group-hover:from-cyan-500 group-hover:to-blue-500">
-                                <span className="relative rounded-md bg-[#FAFAFA] px-5 py-2.5 transition-all duration-75 ease-in group-hover:bg-opacity-0">
-                                    Launch App
+                            <button className="box-border flex h-[60px] w-[210px] items-center justify-center rounded-[10.2934px] border border-[#06B6D4] bg-gradient-to-r from-[#3B82F6] to-[#06B6D4]">
+                                <span className="text-[26px] font-bold leading-[150%] text-[#F6F6F6]">
+                                    Launch app
                                 </span>
-                            </div>
+                            </button>
                         </Link>
                     </nav>
                 </div>
