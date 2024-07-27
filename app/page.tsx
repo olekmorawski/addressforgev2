@@ -1,12 +1,14 @@
-import Image from 'next/image'
 import { Infocards } from '@/components/Infocards'
 import Golem from '../images/golem.svg'
-import Cloud from '../images/cloudlanding.svg'
+
 import Link from 'next/link'
+import Image from 'next/image'
+
 
 export default function Home() {
     return (
-        <div className="flex-grow bg-main">
+        <div className="relative flex-grow">
+
             <main className="mx-auto h-full max-w-[1440px] px-8 py-12">
                 <div className="flex flex-col items-start justify-between md:flex-row">
                     <div className="mb-8 md:mb-0 md:w-1/2">
@@ -36,7 +38,6 @@ export default function Home() {
                             />
                         </div>
                     </div>
-                    {/* <Image src={Cloud} alt={''} className="absolute"></Image> */}
                     <div className="w-full md:w-1/2">
                         <Infocards />
                     </div>

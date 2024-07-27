@@ -1,4 +1,5 @@
 'use client'
+import RootLayout from '../layout'
 import React, { useState, useEffect } from 'react'
 import { Card, CardContent } from '@/components/Card'
 import { Input } from '@/components/Input'
@@ -123,10 +124,8 @@ export default function Generator() {
 
 
     return (
-
-        
         <div className="mx-auto max-w-md space-y-4">
-         
+
             <Card>
                 <CardContent className="mt-10">
                     <div className = "text-sm">
@@ -207,7 +206,7 @@ export default function Generator() {
                             <div className="flex space-x-2">
                                 <Input 
                                     value="0x"
-                                    className="w-[48px]  bg-[#f5f5f5]"
+                                    className="w-[46px]  bg-[#f5f5f5]"
                                     readOnly
                                 />
                             {editablePartPatern === 'prefix' ? (
@@ -221,7 +220,6 @@ export default function Generator() {
                                         value={inputAddress}
                                         onChange={handleInputChange}
                                         maxLength={20} 
-                                        className="flex-grow"
                                     />
                             </>
                         ) : (
@@ -230,7 +228,6 @@ export default function Generator() {
                                         value={inputAddress}
                                         onChange={handleInputChange}
                                         maxLength={20} 
-                                        className="flex-grow"
                                     />
                                     <Input
                                         value={elseValueAddress}
@@ -247,15 +244,16 @@ export default function Generator() {
                             <label className="mb-1 block text-sm font-medium">
                                 Gas reduction level
                             </label>
-                            <div className="flex items-center justify-center">
+                            <div className="flex justify-center">
                                 <Button 
-                                    className="w-1/8 mr-4 bg-[#3B82F6] text-xl"
+                                    className="mr-4 bg-[#3B82F6] text-xl"
                                     onClick={() => updateGasLevelReduction('decrease')}
                                 > -
                                 </Button>
                                 <Input
-                                    className="w-[40px] text-center"
+                                    className="text-center"
                                     value={gasLevelReduction}
+                                    style={{ width: '50px' }}
                                     onChange={(
                                         e: React.ChangeEvent<HTMLInputElement>
                                     ) => {
@@ -266,7 +264,7 @@ export default function Generator() {
                                     }}
                                 />
                                 <Button 
-                                    className="w-1/8 text-center ml-4 bg-[#3B82F6] text-xl"
+                                    className="text-center ml-4 bg-[#3B82F6] text-xl"
                                     onClick={() => updateGasLevelReduction('increase')}
                                 > +
                                 </Button>
@@ -322,6 +320,5 @@ export default function Generator() {
                 </CardContent>
             </Card>
         </div>
-        
     )
 }
