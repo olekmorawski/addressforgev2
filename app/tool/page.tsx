@@ -4,6 +4,12 @@ import { Card, CardContent } from '@/components/Card'
 import { Input } from '@/components/Input'
 import { Button } from '@/components/Button'
 import { Copy } from '@phosphor-icons/react/dist/ssr'
+import {
+    Tabs,
+    TabsHeader,
+    Tab,
+  } from "@material-tailwind/react";
+
 
 export default function Generator() {
     const [developerAddress, setDeveloperAddress] = useState('')
@@ -21,6 +27,28 @@ export default function Generator() {
     const [remainingGenerations, setRemainingGenerations] = useState(5)
     let cutAddress='';
 
+    const dataTypeGeneration = [
+        {
+          label: "Pattern generation",
+          value: "pattern",
+        },
+        {
+          label: "Gas reduction",
+          value: "gas",
+        },
+      ];
+
+      const dataEditablePartPatern = [
+        {
+          label: "Prefix",
+          value: "prefix",
+        },
+        {
+          label: "Sufix",
+          value: "sufix",
+        },
+      ];
+
     const handleGenerateSalt = () => {
         setSalt(Math.floor(Math.random() * 100000).toString())
         setRemainingGenerations((prev) => prev - 1)
@@ -35,13 +63,16 @@ export default function Generator() {
         const totalLength = 42;
         let prefix = '0x';
         if(typeGeneration === 'pattern') {
+            setGasLevelReduction(0);
+            setDifficulty('0')
             calculatedDifficulty = addressLength > 0 ? Math.pow(16, addressLength).toLocaleString('fullwide', {useGrouping:false}) : "0";
-
         } else {
-            console.log('asdasdadadasd')
+            setInputAddress('')
+            setDifficulty('0')
             calculatedDifficulty =gasLevelReduction > 0 ?   Math.pow(16, gasLevelReduction).toLocaleString('fullwide', {useGrouping:false}): "0";
             }
         setDifficulty(calculatedDifficulty);
+
         if(editablePartPatern === 'prefix') {
             if(typeGeneration === 'pattern') {
                 cutAddress = elseValueAddress.slice(0, 42 - 2 - inputAddress.length);
@@ -64,7 +95,7 @@ export default function Generator() {
             }
         }
         
-      }, [inputAddress, elseValueAddress, editablePartPatern, gasLevelReduction]);
+      }, [inputAddress, elseValueAddress, editablePartPatern, gasLevelReduction, typeGeneration]);
 
       const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
@@ -75,7 +106,6 @@ export default function Generator() {
           setIsValidAddress(true);
         }
         setInputAddress(value);
-        console.log(isValidAddress);
       };
 
       const updateGasLevelReduction = (changeType: 'increase' | 'decrease')  => {
@@ -93,7 +123,10 @@ export default function Generator() {
 
 
     return (
+
+        
         <div className="mx-auto max-w-md space-y-4">
+         
             <Card>
                 <CardContent className="mt-10">
                     <div className = "text-sm">
@@ -116,29 +149,23 @@ export default function Generator() {
                 <label className="mb-1 block text-sm font-medium">
                         Choose adress generation pattern
                         </label>
-                    <div className="flex space-x-2" style={{
-                                justifyContent: 'center',
-                                backgroundColor: '#f5f5f5',
-                                padding: '10px',
-                                borderRadius: '10px',
-                                fontSize: '16px'
-                            }}>
-                        <Button 
-                            className="w-1/2"
-                            variant= 'default'
-                            typeControl="toogle"
-                            isActive={typeGeneration === 'pattern'}
-                            onClick={() => setTypeGeneration('pattern')}
-                            > Pattern generation
-                        </Button>
-                        <Button 
-                            className="w-1/2"
-                            typeControl="toogle"
-                            isActive={typeGeneration === 'gas'} 
-                            onClick={() => setTypeGeneration('gas')}
-                        > Gas reduction
-                        </Button>
-                    </div>
+                        
+                        <Tabs value="pattern">
+                            <TabsHeader
+                            placeholder="Select a tab"
+                            >
+                            {dataTypeGeneration.map(({ label, value }) => (
+                                <Tab
+                                    key={value}
+                                    value={value}
+                                    placeholder="Select a tab"
+                                    onClick={() => setTypeGeneration(value)}   
+                                    >
+                                {label}
+                                </Tab>
+                            ))}
+                            </TabsHeader>
+                        </Tabs>
 
                     <div>
                         <label className="mb-1 block text-sm font-medium">
@@ -153,28 +180,22 @@ export default function Generator() {
                         />
                     </div>
 
-                    <div className="flex space-x-2" style={{
-                                justifyContent: 'center',
-                                backgroundColor: '#f5f5f5',
-                                padding: '10px',
-                                borderRadius: '10px',
-                                fontSize: '16px'
-                            }}>
-                        <Button 
-                            className="w-1/2"
-                            typeControl="toogle"
-                            isActive={editablePartPatern === 'prefix'}
-                            onClick={() => setEditablePartPatern('prefix')}
-                            > Prefix
-                        </Button>
-                        <Button 
-                            className="w-1/2"
-                            typeControl="toogle"
-                            isActive={editablePartPatern === 'sufix'} 
-                            onClick={() => setEditablePartPatern('sufix')}
-                        > Sufix
-                        </Button>
-                    </div>
+                    <Tabs value="prefix">
+                            <TabsHeader
+                            placeholder="Select a tab"
+                            >
+                            {dataEditablePartPatern.map(({ label, value }) => (
+                                <Tab
+                                    key={value}
+                                    value={value}
+                                    placeholder="Select a tab"
+                                    onClick={() => setEditablePartPatern(value)}   
+                                    >
+                                {label}
+                                </Tab>
+                            ))}
+                            </TabsHeader>
+                        </Tabs>
 
                     {typeGeneration === 'pattern' ? (
                         <>
@@ -186,20 +207,21 @@ export default function Generator() {
                             <div className="flex space-x-2">
                                 <Input 
                                     value="0x"
-                                    className="w-11 bg-[#f5f5f5]"
+                                    className="w-[48px]  bg-[#f5f5f5]"
                                     readOnly
                                 />
                             {editablePartPatern === 'prefix' ? (
                                 <>
                                     <Input
                                         value={elseValueAddress}
-                                        className="bg-[#f5f5f5]"
+                                        className="bg-[#f5f5f5] flex-grow"
                                         readOnly
                                     />
                                     <Input
                                         value={inputAddress}
                                         onChange={handleInputChange}
                                         maxLength={20} 
+                                        className="flex-grow"
                                     />
                             </>
                         ) : (
@@ -208,10 +230,12 @@ export default function Generator() {
                                         value={inputAddress}
                                         onChange={handleInputChange}
                                         maxLength={20} 
+                                        className="flex-grow"
                                     />
                                     <Input
                                         value={elseValueAddress}
-                                        className="bg-[#f5f5f5]"
+                                        className="bg-[#f5f5f5] flex-grow"
+                                        readOnly
                                     />
                                 </>
                         )}
@@ -223,14 +247,14 @@ export default function Generator() {
                             <label className="mb-1 block text-sm font-medium">
                                 Gas reduction level
                             </label>
-                            <div className="text-center">
+                            <div className="flex items-center justify-center">
                                 <Button 
                                     className="w-1/8 mr-4 bg-[#3B82F6] text-xl"
                                     onClick={() => updateGasLevelReduction('decrease')}
                                 > -
                                 </Button>
                                 <Input
-                                    className="w-1/5 text-center"
+                                    className="w-[40px] text-center"
                                     value={gasLevelReduction}
                                     onChange={(
                                         e: React.ChangeEvent<HTMLInputElement>
@@ -298,5 +322,6 @@ export default function Generator() {
                 </CardContent>
             </Card>
         </div>
+        
     )
 }

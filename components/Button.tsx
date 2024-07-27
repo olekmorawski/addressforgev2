@@ -14,8 +14,6 @@ export const Button: React.FC<ButtonProps> = ({
     className = '',
     variant = 'default',
     size = 'default',
-    typeControl = 'button',
-    isActive = false, 
     ...props
 }) => {
     const baseStyle =
@@ -38,7 +36,7 @@ export const Button: React.FC<ButtonProps> = ({
 
     return (
         <button
-            className={`${baseStyle} ${variantClass} ${sizeClass} ${className} ${typeControl === 'toogle' ? (isActive ? 'active' : 'deactive') : ''}`}
+            className={`${baseStyle} ${variantClass} ${sizeClass} ${className} ) : ''}`}
             {...props}
         >
             {children}
