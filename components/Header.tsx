@@ -6,7 +6,7 @@ import { Moon } from '@phosphor-icons/react/dist/ssr'
 
 export const Header = () => {
     return (
-        <header className="bg-main top-0 h-[110px] w-full">
+        <header className="top-0 h-[110px] w-full relative z-10">
             <div className="mx-auto max-w-[1440px]">
                 <div className="flex items-center justify-between py-4">
                     <Link

@@ -1,4 +1,5 @@
 'use client'
+import RootLayout from '../layout'
 import React, { useState, useEffect } from 'react'
 import { Card, CardContent } from '@/components/Card'
 import { Input } from '@/components/Input'
@@ -123,10 +124,8 @@ export default function Generator() {
 
 
     return (
-
-        
         <div className="mx-auto max-w-md space-y-4">
-         
+
             <Card>
                 <CardContent className="mt-10">
                     <div className = "text-sm">
@@ -322,6 +321,5 @@ export default function Generator() {
                 </CardContent>
             </Card>
         </div>
-        
     )
 }
