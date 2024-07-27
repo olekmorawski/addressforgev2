@@ -63,12 +63,16 @@ export default function Generator() {
         const totalLength = 42;
         let prefix = '0x';
         if(typeGeneration === 'pattern') {
+            setGasLevelReduction(0);
+            setDifficulty('0')
             calculatedDifficulty = addressLength > 0 ? Math.pow(16, addressLength).toLocaleString('fullwide', {useGrouping:false}) : "0";
-
         } else {
+            setInputAddress('')
+            setDifficulty('0')
             calculatedDifficulty =gasLevelReduction > 0 ?   Math.pow(16, gasLevelReduction).toLocaleString('fullwide', {useGrouping:false}): "0";
             }
         setDifficulty(calculatedDifficulty);
+
         if(editablePartPatern === 'prefix') {
             if(typeGeneration === 'pattern') {
                 cutAddress = elseValueAddress.slice(0, 42 - 2 - inputAddress.length);
@@ -91,7 +95,7 @@ export default function Generator() {
             }
         }
         
-      }, [inputAddress, elseValueAddress, editablePartPatern, gasLevelReduction]);
+      }, [inputAddress, elseValueAddress, editablePartPatern, gasLevelReduction, typeGeneration]);
 
       const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
@@ -203,20 +207,21 @@ export default function Generator() {
                             <div className="flex space-x-2">
                                 <Input 
                                     value="0x"
-                                    className="w-11 bg-[#f5f5f5]"
+                                    className="w-[48px]  bg-[#f5f5f5]"
                                     readOnly
                                 />
                             {editablePartPatern === 'prefix' ? (
                                 <>
                                     <Input
                                         value={elseValueAddress}
-                                        className="bg-[#f5f5f5]"
+                                        className="bg-[#f5f5f5] flex-grow"
                                         readOnly
                                     />
                                     <Input
                                         value={inputAddress}
                                         onChange={handleInputChange}
                                         maxLength={20} 
+                                        className="flex-grow"
                                     />
                             </>
                         ) : (
@@ -225,10 +230,12 @@ export default function Generator() {
                                         value={inputAddress}
                                         onChange={handleInputChange}
                                         maxLength={20} 
+                                        className="flex-grow"
                                     />
                                     <Input
                                         value={elseValueAddress}
-                                        className="bg-[#f5f5f5]"
+                                        className="bg-[#f5f5f5] flex-grow"
+                                        readOnly
                                     />
                                 </>
                         )}
