@@ -5,8 +5,6 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     className?: string
     variant?: 'default' | 'outline' | 'ghost'
     size?: 'default' | 'icon'
-    typeControl?: 'button' | 'toogle'
-    isActive?: boolean 
 }
 
 export const Button: React.FC<ButtonProps> = ({

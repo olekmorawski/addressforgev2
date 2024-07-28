@@ -28,6 +28,10 @@ export default function Generator() {
     const [remainingGenerations, setRemainingGenerations] = useState(5)
     let cutAddress='';
 
+    const inputWidth = Math.max(30, 30 + inputAddress.length * 10);
+    const elseValueWidth = `calc(100% - ${inputWidth}px - 24px)`; 
+
+
     const dataTypeGeneration = [
         {
           label: "Pattern generation",
@@ -55,11 +59,9 @@ export default function Generator() {
         setRemainingGenerations((prev) => prev - 1)
     }
     let calculatedDifficulty = "0";
-    const ethereumAddressRegex = /^0x[a-fA-F0-9]+$/;
+    const regexPattern = /^[a-fA-F0-9]+$/;
 
     useEffect(() => {
-
-
         const addressLength = inputAddress.length;
         const totalLength = 42;
         let prefix = '0x';
@@ -99,14 +101,10 @@ export default function Generator() {
       }, [inputAddress, elseValueAddress, editablePartPatern, gasLevelReduction, typeGeneration]);
 
       const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = event.target.value;
-        const fullAddress = `0x${value}`;
-        const isValid = ethereumAddressRegex.test(fullAddress);
-        setIsValidAddress(isValid);
-        if(value ===''){
-          setIsValidAddress(true);
+        const { value } = event.target;
+        if (value === '' || regexPattern.test(value)) {
+            setInputAddress(value);
         }
-        setInputAddress(value);
       };
 
       const updateGasLevelReduction = (changeType: 'increase' | 'decrease')  => {
@@ -206,20 +204,24 @@ export default function Generator() {
                             <div className="flex space-x-2">
                                 <Input 
                                     value="0x"
-                                    className="w-[46px]  bg-[#f5f5f5]"
+                                    className=" bg-[#f5f5f5]  text-gray-500  pointer-events-none select-none  !w-[46px]"
                                     readOnly
                                 />
                             {editablePartPatern === 'prefix' ? (
                                 <>
                                     <Input
                                         value={elseValueAddress}
-                                        className="bg-[#f5f5f5] flex-grow"
+                                        className=" bg-[#f5f5f5] flex-grow  text-gray-500 pointer-events-none select-none"
                                         readOnly
+                                        style={{ width: elseValueWidth }}
                                     />
                                     <Input
                                         value={inputAddress}
                                         onChange={handleInputChange}
                                         maxLength={20} 
+                                        className="text-[#3A83F5]  font-medium"
+                                        style={{ width: `${inputWidth}px` }}
+
                                     />
                             </>
                         ) : (
@@ -228,11 +230,14 @@ export default function Generator() {
                                         value={inputAddress}
                                         onChange={handleInputChange}
                                         maxLength={20} 
+                                        style={{ width: `${inputWidth}px` }}
+                                        className="text-[#3A83F5]  font-medium"
                                     />
                                     <Input
                                         value={elseValueAddress}
-                                        className="bg-[#f5f5f5] flex-grow"
+                                        className="bg-[#f5f5f5] flex-grow text-gray-500 pointer-events-none select-none"
                                         readOnly
+                                        style={{ width: elseValueWidth }}
                                     />
                                 </>
                         )}
@@ -244,12 +249,18 @@ export default function Generator() {
                             <label className="mb-1 block text-sm font-medium">
                                 Gas reduction level
                             </label>
-                            <div className="flex justify-center">
-                                <Button 
-                                    className="mr-4 bg-[#3B82F6] text-xl"
-                                    onClick={() => updateGasLevelReduction('decrease')}
-                                > -
-                                </Button>
+                                <div className="flex justify-center items-center">
+                                <a
+                                    href="#"
+                                    className="mr-4 flex items-center justify-center bg-[#3B82F6] text-xl text-white rounded-md"
+                                    style={{ width: '28px', height: '24px' }}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        updateGasLevelReduction('decrease');
+                                    }}
+                                >
+                                    <span style={{ fontSize: '20px' }}>-</span>
+                                </a>
                                 <Input
                                     className="text-center"
                                     value={gasLevelReduction}
@@ -263,14 +274,21 @@ export default function Generator() {
                                         }
                                     }}
                                 />
-                                <Button 
-                                    className="text-center ml-4 bg-[#3B82F6] text-xl"
-                                    onClick={() => updateGasLevelReduction('increase')}
-                                > +
-                                </Button>
+                                <a
+                                    href="#"
+                                    className="ml-4 flex items-center justify-center bg-[#3B82F6] text-xl text-white rounded-md"
+                                    style={{ width: '28px', height: '24px' }}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        updateGasLevelReduction('increase');
+                                    }}
+                                >
+                                    <span style={{ fontSize: '20px' }}>+</span>
+                                </a>
                             </div>
                             </>
                         )}
+
 
                 </CardContent>
             </Card>
